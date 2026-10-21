@@ -8,3 +8,7 @@ data/
 test-results/
 
 .taste-skill/
+.wrangler/
+.dev.vars
+.dev.vars.*
+migration/cache/

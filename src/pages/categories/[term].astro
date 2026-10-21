@@ -1,0 +1,7 @@
+---
+import Taxonomy from '../../components/Taxonomy.astro';
+import {getTaxonomies,taxonomySlug} from '../../lib/content.mjs';
+export function getStaticPaths(){return getTaxonomies('categories').map(term=>({params:{term:taxonomySlug(term)},props:{term}}));}
+const {term}=Astro.props;
+---
+<Taxonomy kind="categories" term={term} />

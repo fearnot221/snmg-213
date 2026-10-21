@@ -1,6 +1,7 @@
 ---
 import { withBase } from '../lib/paths.mjs';
 import '../styles/global.css';
+import '../styles/enhancements.css';
 import Mark from '../components/Mark.astro';
 import { getSettings } from '../lib/content.mjs';
 interface Props { title?: string; description?: string; }
@@ -8,6 +9,7 @@ const { title, description = '國立中央大學工程二館網路機房。網�
 const settings = getSettings();
 const path = Astro.url.pathname;
 const navigation = [{ href: '/#services', label: '網路服務' }, { href: '/announcements', label: '公告與文章' }, { href: '/about', label: '關於機房' }, { href: '/joinus', label: '加入我們' }];
+const resources=[{href:'/documents/',label:'文件與教學'},{href:'/sched/',label:'機房值班表'},{href:'/members/',label:'團隊成員'},{href:'/pages/',label:'完整網站索引'}];
 const canonical = new URL(path, Astro.site);
 ---
 <!doctype html>
@@ -29,14 +31,14 @@ const canonical = new URL(path, Astro.site);
     <a class="skip-link" href="#main">跳至主要內容</a>
     <header class="site-header wrap">
       <a class="brand" href={withBase("/")} aria-label="SNMG 工二機房首頁"><Mark /><span class="brand-name">snmg<span class="brand-caption">中央大學・工二機房</span></span></a>
-      <nav class="desktop-nav" aria-label="主要導覽">{navigation.map(link => <a href={withBase(link.href)} aria-current={path.replace(/\/$/, '') === withBase(link.href).replace(/\/$/, '') ? 'page' : undefined}>{link.label}</a>)}</nav>
+      <nav class="desktop-nav" aria-label="主要導覽">{navigation.map(link => <a href={withBase(link.href)} aria-current={path.replace(/\/$/, '') === withBase(link.href).replace(/\/$/, '') ? 'page' : undefined}>{link.label}</a>)}<details class="resource-menu"><summary>更多資源 <span aria-hidden="true">＋</span></summary><nav aria-label="資源導覽">{resources.map(link=><a href={withBase(link.href)}>{link.label}<span aria-hidden="true">↗</span></a>)}</nav></details></nav>
       <a class="header-action" href={withBase("/forms")}>服務與支援 <span aria-hidden="true">↗</span></a>
-      <details class="mobile-menu"><summary aria-label="開啟導覽選單">選單 <span aria-hidden="true">＋</span></summary><nav aria-label="手機導覽">{navigation.map(link => <a href={withBase(link.href)}>{link.label}</a>)}<a href={withBase("/forms")}>服務與支援</a><a href={withBase("/documents")}>文件下載</a><a href={withBase("/sched")}>值班表</a></nav></details>
+      <details class="mobile-menu"><summary aria-label="開啟導覽選單">選單 <span aria-hidden="true">＋</span></summary><nav aria-label="手機導覽">{navigation.map(link => <a href={withBase(link.href)}>{link.label}</a>)}<a href={withBase("/forms")}>服務與支援</a>{resources.map(link=><a href={withBase(link.href)}>{link.label}</a>)}</nav></details>
     </header>
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <div class="wrap footer-top"><div><a href={withBase("/")} class="footer-title">每一次連結，<br />都有我們。</a><p>國立中央大學 工程二館網路機房</p></div><div class="footer-contact"><a href={`mailto:${settings.email}`}>{settings.email}</a><p>{settings.officeHours}<br />{settings.phone}</p><a href="https://maps.app.goo.gl/yUiPDJRYHmtqZB7z8" target="_blank" rel="noopener noreferrer">桃園市中壢區中大路 300 號<br />工程二館 E1-213 室 ↗</a></div></div>
-      <div class="wrap footer-links"><nav aria-label="其他連結"><a href={withBase("/documents")}>文件下載</a><a href={withBase("/sched")}>值班表</a><a href={withBase("/members")}>團隊成員</a><a href="https://www.ce.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">通訊系 ↗</a><a href="https://www2.ee.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">電機系 ↗</a></nav><a href={withBase("/admin")}>管理後台 ↗</a></div>
+      <div class="wrap footer-links"><nav aria-label="其他連結"><a href={withBase("/documents")}>文件下載</a><a href={withBase("/sched")}>值班表</a><a href={withBase("/members")}>團隊成員</a><a href={withBase("/pages/")}>網站索引</a><a href="https://www.ce.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">通訊系 ↗</a><a href="https://www2.ee.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">電機系 ↗</a></nav><a href={withBase("/admin")}>管理後台 ↗</a></div>
       <div class="wrap footer-wordmark" aria-hidden="true">snmg<span>213</span></div>
       <div class="wrap footer-bottom"><span>© {new Date().getFullYear()} NCU EECE SNMG</span><span>讓好奇心，保持連線。</span><a href="#main">回到頂端 ↑</a></div>
     </footer>
@@ -46,14 +48,22 @@ const canonical = new URL(path, Astro.site);
         const observer = new IntersectionObserver(entries => {
           for (const entry of entries) if (entry.isIntersecting) {
             const element = entry.target as HTMLElement;
-            element.animate([{ opacity: .5, transform: 'translateY(22px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 700, delay: Number(element.dataset.delay || 0), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+            if (reduce.matches) { observer.unobserve(element); continue; }
+            const photo=element.classList.contains('about-photo');
+            element.animate(photo ? [{opacity:0,transform:'translateY(24px) scale(.97)'},{opacity:1,transform:'translateY(0) scale(1)'}] : [{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: photo?800:560, delay: Math.min(Number(element.dataset.delay || 0),180), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
             observer.unobserve(element);
           }
         }, { threshold: .12 });
         document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
       }
-      document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', () => document.querySelector('.mobile-menu')?.removeAttribute('open')));
-      document.addEventListener('keydown', event => { if (event.key === 'Escape') document.querySelector('.mobile-menu')?.removeAttribute('open'); });
+      const menus=[...document.querySelectorAll<HTMLDetailsElement>('.mobile-menu,.resource-menu')];
+      const closeMenus=()=>menus.forEach(menu=>{menu.open=false});
+      menus.forEach(menu=>{
+        menu.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenus));
+        menu.addEventListener('toggle',()=>{if(menu.open)menus.filter(other=>other!==menu).forEach(other=>other.open=false)});
+      });
+      document.addEventListener('pointerdown',event=>{if(!menus.some(menu=>menu.contains(event.target as Node)))closeMenus()});
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') { const open=menus.find(menu=>menu.open);closeMenus();open?.querySelector('summary')?.focus(); } });
     </script>
   </body>
 </html>

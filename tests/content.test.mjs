@@ -29,7 +29,7 @@ test('settings reject unsafe service URLs and invalid email addresses', () => {
 });
 test('Markdown preserves formatting while stripping XSS and prefixing repo media paths', () => {
   const html=renderMarkdown('## 標題\n\n**粗體**\n\n<script>alert(1)</script>\n\n<img src="/images/uploads/test.png" onerror="alert(1)">\n\n[危險](javascript:alert(1))\n\n[內頁](/forms/)');
-  assert.match(html,/<h2>標題<\/h2>/);assert.match(html,/<strong>粗體<\/strong>/);
+  assert.match(html,/<h2 id="標題">標題<\/h2>/);assert.match(html,/<strong>粗體<\/strong>/);
   assert.doesNotMatch(html,/<script|onerror|javascript:/i);
   assert.match(html,/src="\/snmg-213\/images\/uploads\/test.png"/);
   assert.match(html,/href="\/snmg-213\/forms\/"/);

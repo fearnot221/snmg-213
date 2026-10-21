@@ -13,7 +13,7 @@ const posts = getPosts();
     </div>
     <p id="result-count" role="status" style="margin-bottom:20px;color:var(--muted);font-size:14px">共 {posts.length} 篇內容</p>
     <noscript><p style="margin-bottom:20px">目前顯示全部文章；啟用 JavaScript 後可使用搜尋與分類。</p></noscript>
-    <div class="article-list">{posts.map(post => <a class="article-item" href={withBase(`/announcements/${post.slug}/`)} data-category={post.category} data-search={`${post.title} ${post.summary}`.toLowerCase()}><div class="news-meta"><span>{post.pinned ? '置頂・' : ''}{post.category}</span><time datetime={post.date}>{formatDate(post.date)}{post.source ? ' 匯入' : ''}</time></div><div><h2>{post.title}</h2><p>{post.summary}</p></div><span aria-hidden="true">↗</span></a>)}</div>
+    <div class="article-list">{posts.map(post => <a class="article-item" href={withBase(`/announcements/${post.slug}/`)} data-category={post.category} data-search={`${post.title} ${post.summary}`.toLowerCase()}><div class="news-meta"><span>{post.pinned ? '置頂・' : ''}{post.category}</span><time datetime={post.date}>{formatDate(post.date)}{post.source && post.sourceType !== 'full' ? ' 匯入' : ''}</time></div><div><h2>{post.title}</h2><p>{post.summary}</p></div><span aria-hidden="true">↗</span></a>)}</div>
     <div class="empty-state" id="empty-state" hidden><h2>沒有找到相關內容</h2><p>試試其他關鍵字，或瀏覽全部文章。</p><a class="button" id="clear-filters" href={withBase('/announcements/')}>清除篩選</a></div>
   </section>
   <script>

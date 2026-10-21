@@ -3,10 +3,16 @@
   "title": "斷電及服務影響說明",
   "category": "公告",
   "summary": "2025 年 10 月 25 日校方配電設備更換期間，機房服務可能受停電影響。",
-  "body": "2025 年 10 月 25 日校方配電設備更換期間，機房服務可能受停電影響。\n\n## 閱讀完整資訊\n\n此篇為原站內容摘要，於 2026 年 10 月 22 日匯入。實際施作細節、附件及完整操作步驟，請閱讀下方的原站文章。\n\n如有問題，請來信 [snmg@ce.ncu.edu.tw](mailto:snmg@ce.ncu.edu.tw)，或於辦公時間聯絡工程二館 213 室。",
-  "date": "2026-10-22",
+  "body": "<p>各位教授、教職員好：</p>\n<p>根據校方公告，2025年10月25日（星期六）08:00 至 10:00 將進行「東區總變電站高壓配電盤CTD更換作業」之停電。</p>\n<p>由於備援電力系統目前處於故障狀態，在上述停電期間，工二館內網路以及服務將會斷線。</p>\n<p>目前排定 10月28日（星期二）進行備援電力修復，網路以及服務同樣將斷線。預計當日修復完畢後，會陸續回復。</p>\n<p>我們深知這將對您的教學與研究計畫造成影響，故提早通知，希望能讓您預先安排相關事宜。</p>\n<table>\n  <thead>\n      <tr>\n          <th style=\"text-align: center\"><u><strong>日期</strong></u></th>\n          <th style=\"text-align: center\"><u><strong>斷線緣由</strong></u></th>\n      </tr>\n  </thead>\n  <tbody>\n      <tr>\n          <td style=\"text-align: center\">10/25</td>\n          <td style=\"text-align: center\">校園停電通知</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">10/28</td>\n          <td style=\"text-align: center\">電力系統修復</td>\n      </tr>\n  </tbody>\n</table>\n<table>\n  <thead>\n      <tr>\n          <th style=\"text-align: center\"><u><strong>預計影響之服務</strong></u></th>\n      </tr>\n  </thead>\n  <tbody>\n      <tr>\n          <td style=\"text-align: center\">工二館Wi-Fi</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">工二館網路連線</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">DNS解析服務</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">網頁服務</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">郵件未轉移之使用者</td>\n      </tr>\n  </tbody>\n</table>\n<p>造成您的不便，敬請見諒。感謝您的理解與配合。</p>",
+  "date": "2025-10-17",
   "published": true,
   "pinned": false,
   "source": "https://snmg.ce.ncu.edu.tw/announcements/%E6%96%B7%E9%9B%BB%E5%8F%8A%E6%9C%8D%E5%8B%99%E5%BD%B1%E9%9F%BF%E8%AA%AA%E6%98%8E/",
-  "order": 3
+  "order": 3,
+  "sourceType": "full",
+  "tags": [
+    "停電"
+  ],
+  "author": "/members/112-conashin/",
+  "authorName": "YEN JUNG CHEN"
 }

@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {getLegacyPages,renderMarkdown} from '../lib/content.mjs';
+import {withBase} from '../lib/paths.mjs';
+export function getStaticPaths(){return getLegacyPages().filter(page=>page.path!=='/pages/').map(page=>({params:{path:page.path.slice(1,-1)},props:{page}}));}
+const {page}=Astro.props;
+const title=page.path==='/privacy-policy/'?'隱私權說明':page.path==='/elements/'?'內容元件示例':page.title;
+---
+<Layout title={title}><header class="page-intro wrap"><a class="back-link" href={withBase('/pages/')}>← 網站索引</a><h1>{title}</h1><p>{page.path==='/elements/'?'保留原站的內容格式示例，供網站維護與版型確認。':page.path==='/privacy-policy/'?'原站政策頁面與資料處理說明。':'工程二館網路機房'}</p></header><article class="page-content wrap"><div class="prose legacy-prose" set:html={renderMarkdown(page.body||'<p>原站此頁尚未提供條文內容。關於個人資料與表單的處理方式，請聯絡機房確認。</p>')}></div></article></Layout>

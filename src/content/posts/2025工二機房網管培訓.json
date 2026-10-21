@@ -1,12 +1,18 @@
 {
   "slug": "2025工二機房網管培訓",
-  "title": "2025 工二機房網管培訓",
-  "category": "招募資訊",
+  "title": "2025工二機房網管培訓",
+  "category": "公告",
   "summary": "認識伺服器管理、網路配置與硬體維護。此為 2025 年歷史招募資訊，最新梯次請洽機房。",
-  "body": "認識伺服器管理、網路配置與硬體維護。此為 2025 年歷史招募資訊，最新梯次請洽機房。\n\n## 閱讀完整資訊\n\n此篇為原站內容摘要，於 2026 年 10 月 22 日匯入。實際施作細節、附件及完整操作步驟，請閱讀下方的原站文章。\n\n如有問題，請來信 [snmg@ce.ncu.edu.tw](mailto:snmg@ce.ncu.edu.tw)，或於辦公時間聯絡工程二館 213 室。",
-  "date": "2026-10-22",
+  "body": "<p>想學習伺服器管理、網路配置、硬體維護等技能嗎？</p>\n<p>加入機房不僅能培養專業技術，對推甄備審很有幫助！</p>\n<p>本次招生預計招入2-3名新進人員，由於招募前都有培訓課程，因此無經驗者也可以輕鬆參與！</p>\n<h2 id=\"新進人員條件\">新進人員條件</h2>\n<p>我們主要服務工程二館的網路，並且領有工讀薪資，因此招募之人員須具備以下資格：</p>\n<ol>\n<li>通訊工程學系、電機工程學系、資電院學士班</li>\n<li>限大學部大一生</li>\n<li>具中華民國國籍者，或領有有效工作證之僑生</li>\n</ol>\n<h2 id=\"培訓課程大綱\">培訓課程大綱</h2>\n<table>\n  <thead>\n      <tr>\n          <th style=\"text-align: center\"><u><strong>周次</strong></u></th>\n          <th style=\"text-align: center\"><u><strong>影片內容</strong></u></th>\n      </tr>\n  </thead>\n  <tbody>\n      <tr>\n          <td style=\"text-align: center\">3/31 ~ 4/4</td>\n          <td style=\"text-align: center\">Linux 入門</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">4/7 ~ 4/11</td>\n          <td style=\"text-align: center\">網路概論</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">4/14 ~ 4/18</td>\n          <td style=\"text-align: center\">WireShark</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">4/21 ~ 4/25</td>\n          <td style=\"text-align: center\">網路基礎</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">4/28 ~ 5/2</td>\n          <td style=\"text-align: center\">Docker概覽</td>\n      </tr>\n      <tr>\n          <td style=\"text-align: center\">5/5 ~ 5/9</td>\n          <td style=\"text-align: center\">VM入門</td>\n      </tr>\n  </tbody>\n</table>\n<h2 id=\"甄選時間\">甄選時間</h2>\n<p>約培訓課程結束後，1~2周進行。甄選內容如下：</p>\n<ol>\n<li>筆試：表單進行，作答時間24小時</li>\n<li>實作：表單進行，作答時間24小時</li>\n<li>面談：在1.及2.後，另行安排簡單的面談</li>\n</ol>\n<h2 id=\"報名資訊\">報名資訊</h2>\n<p>還沒有報名嗎？歡迎填表單加入培訓課程</p>\n\n\n\n\n\n\n \n  \n  \n \n  \n  \n \n  \n  \n \n\n\n<a href=\"https://forms.gle/MgvnYmErX2R8guii7\" class=\"btn btn-primary \" target=\"_blank\" rel=\"noopener \">點我報名！</a>",
+  "date": "2025-03-07",
   "published": true,
   "pinned": false,
   "source": "https://snmg.ce.ncu.edu.tw/announcements/2025%E5%B7%A5%E4%BA%8C%E6%A9%9F%E6%88%BF%E7%B6%B2%E7%AE%A1%E5%9F%B9%E8%A8%93/",
-  "order": 4
+  "order": 4,
+  "sourceType": "full",
+  "tags": [
+    "招募資訊"
+  ],
+  "author": "/members/9112-yann/",
+  "authorName": "YAN TING LIU"
 }

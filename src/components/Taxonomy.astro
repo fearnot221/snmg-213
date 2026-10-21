@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {getPosts,getTaxonomies,taxonomySlug,formatDate} from '../lib/content.mjs';
+import {withBase} from '../lib/paths.mjs';
+interface Props {kind:'categories'|'tags';term?:string;}
+const {kind,term}=Astro.props;const label=kind==='categories'?'內容分類':'主題標籤';
+const posts=getPosts();const terms=getTaxonomies(kind);
+const selected=term?posts.filter(post=>kind==='categories'?post.category===term:post.tags?.includes(term)):[];
+---
+<Layout title={term||label}><header class="page-intro wrap">{term&&<a class="back-link" href={withBase(`/${kind}/`)}>← {label}</a>}<h1>{term||label}</h1><p>{term?`和「${term}」相關的 ${selected.length} 篇內容。`:'依照主題找到公告、使用教學與機房資訊。'}</p></header><div class="page-content wrap">{term?<div class="article-list">{selected.map(post=><a class="article-item" href={withBase(`/announcements/${post.slug}/`)}><div class="news-meta"><span>{post.category}</span><time datetime={post.date}>{formatDate(post.date)}</time></div><div><h2>{post.title}</h2><p>{post.summary}</p></div><span aria-hidden="true">↗</span></a>)}{selected.length===0&&<p>目前沒有此主題的公開內容。</p>}</div>:<nav class="taxonomy-index" aria-label={label}>{terms.map(value=><a href={withBase(`/${kind}/${taxonomySlug(value)}/`)}><span>{value}</span><span>{posts.filter(post=>kind==='categories'?post.category===value:post.tags?.includes(value)).length} 篇 <i aria-hidden="true">↗</i></span></a>)}</nav>}<a class="text-link" style="display:inline-block;margin-top:35px" href={withBase('/announcements/')}>瀏覽全部文章 ↗</a></div></Layout>

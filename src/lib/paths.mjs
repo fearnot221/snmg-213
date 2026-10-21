@@ -4,4 +4,4 @@ export function withBase(path = '/') {
   return `${base}${path}`;
 }
 export const repositoryUrl = 'https://github.com/fearnot221/snmg-213';
-export const cmsUrl = 'https://app.pagescms.org/fearnot221/snmg-213/main';
+export const cmsUrl = 'https://snmg-213-admin.kenin221.workers.dev/';
