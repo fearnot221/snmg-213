@@ -1,0 +1,6 @@
+---
+import { withBase } from '../lib/paths.mjs';
+import Layout from '../layouts/Layout.astro';
+
+---
+<Layout title="找不到頁面"><section class="page-intro wrap" style="padding-bottom:110px"><h1>這條連線，<br />還沒接上。</h1><p>頁面可能已移動，或文章尚未發布。</p><a class="button" style="margin-top:30px" href={withBase("/")}>返回首頁<span aria-hidden="true">↗</span></a></section></Layout>

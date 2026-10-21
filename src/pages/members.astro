@@ -1,0 +1,5 @@
+---
+import { withBase } from '../lib/paths.mjs';
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="團隊成員"><header class="page-intro wrap"><h1>連線背後的人。</h1><p>由中央大學電機、通訊系與資電院學士班學生組成。</p></header><div class="page-content wrap content-grid"><div class="prose"><h2>一起維運，一起學習</h2><p>機房團隊透過排班協作、實作培訓與經驗交接，持續維護系館網路。成員名單與個人介紹請參考原站最新資訊。</p><a class="button" href="https://snmg.ce.ncu.edu.tw/members/" target="_blank" rel="noopener noreferrer">原站成員資訊<span aria-hidden="true">↗</span></a></div><div><img src={withBase("/images/joining.jpg")} alt="原站使用的伺服器機櫃示意照片" width="1024" height="683" /><p class="photo-credit">機櫃示意照片沿用原 SNMG 網站，非團隊實景紀錄。</p></div></div></Layout>

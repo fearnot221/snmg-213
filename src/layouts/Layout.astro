@@ -1,0 +1,59 @@
+---
+import { withBase } from '../lib/paths.mjs';
+import '../styles/global.css';
+import Mark from '../components/Mark.astro';
+import { getSettings } from '../lib/content.mjs';
+interface Props { title?: string; description?: string; }
+const { title, description = '國立中央大學工程二館網路機房。網路維運、DNS 申請、系所郵件、網頁代管與網管培訓。' } = Astro.props;
+const settings = getSettings();
+const path = Astro.url.pathname;
+const navigation = [{ href: '/#services', label: '網路服務' }, { href: '/announcements', label: '公告與文章' }, { href: '/about', label: '關於機房' }, { href: '/joinus', label: '加入我們' }];
+const canonical = new URL(path, Astro.site);
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <slot name="head" />
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <title>{title ? `${title} — SNMG 工二機房` : 'SNMG 工二機房 — 連結校園，不只網路'}</title>
+    <meta name="description" content={description} /><link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title || 'SNMG 工二機房 — 連結校園，不只網路'} /><meta property="og:description" content={description} />
+    <meta property="og:type" content="website" /><meta property="og:locale" content="zh_TW" /><meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(withBase('/images/social.svg'), Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳至主要內容</a>
+    <header class="site-header wrap">
+      <a class="brand" href={withBase("/")} aria-label="SNMG 工二機房首頁"><Mark /><span class="brand-name">snmg<span class="brand-caption">中央大學・工二機房</span></span></a>
+      <nav class="desktop-nav" aria-label="主要導覽">{navigation.map(link => <a href={withBase(link.href)} aria-current={path.replace(/\/$/, '') === withBase(link.href).replace(/\/$/, '') ? 'page' : undefined}>{link.label}</a>)}</nav>
+      <a class="header-action" href={withBase("/forms")}>服務與支援 <span aria-hidden="true">↗</span></a>
+      <details class="mobile-menu"><summary aria-label="開啟導覽選單">選單 <span aria-hidden="true">＋</span></summary><nav aria-label="手機導覽">{navigation.map(link => <a href={withBase(link.href)}>{link.label}</a>)}<a href={withBase("/forms")}>服務與支援</a><a href={withBase("/documents")}>文件下載</a><a href={withBase("/sched")}>值班表</a></nav></details>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="wrap footer-top"><div><a href={withBase("/")} class="footer-title">每一次連結，<br />都有我們。</a><p>國立中央大學 工程二館網路機房</p></div><div class="footer-contact"><a href={`mailto:${settings.email}`}>{settings.email}</a><p>{settings.officeHours}<br />{settings.phone}</p><a href="https://maps.app.goo.gl/yUiPDJRYHmtqZB7z8" target="_blank" rel="noopener noreferrer">桃園市中壢區中大路 300 號<br />工程二館 E1-213 室 ↗</a></div></div>
+      <div class="wrap footer-links"><nav aria-label="其他連結"><a href={withBase("/documents")}>文件下載</a><a href={withBase("/sched")}>值班表</a><a href={withBase("/members")}>團隊成員</a><a href="https://www.ce.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">通訊系 ↗</a><a href="https://www2.ee.ncu.edu.tw/" target="_blank" rel="noopener noreferrer">電機系 ↗</a></nav><a href={withBase("/admin")}>管理後台 ↗</a></div>
+      <div class="wrap footer-wordmark" aria-hidden="true">snmg<span>213</span></div>
+      <div class="wrap footer-bottom"><span>© {new Date().getFullYear()} NCU EECE SNMG</span><span>讓好奇心，保持連線。</span><a href="#main">回到頂端 ↑</a></div>
+    </footer>
+    <script>
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!reduce.matches) {
+        const observer = new IntersectionObserver(entries => {
+          for (const entry of entries) if (entry.isIntersecting) {
+            const element = entry.target as HTMLElement;
+            element.animate([{ opacity: .5, transform: 'translateY(22px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 700, delay: Number(element.dataset.delay || 0), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+            observer.unobserve(element);
+          }
+        }, { threshold: .12 });
+        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+      }
+      document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', () => document.querySelector('.mobile-menu')?.removeAttribute('open')));
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') document.querySelector('.mobile-menu')?.removeAttribute('open'); });
+    </script>
+  </body>
+</html>

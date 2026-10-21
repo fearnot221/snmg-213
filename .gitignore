@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.env
+data/
+.taste-skill/inspect/
+.taste-skill/final/
+test-results/
+
+.taste-skill/

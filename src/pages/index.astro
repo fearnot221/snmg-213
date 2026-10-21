@@ -1,0 +1,33 @@
+---
+import { withBase } from '../lib/paths.mjs';
+import Layout from '../layouts/Layout.astro';
+import Switch from '../components/Switch.astro';
+import { getSettings, getPosts, formatDate } from '../lib/content.mjs';
+const s = getSettings();
+const posts = getPosts().slice(0, 3);
+---
+<Layout>
+  <section class="hero wrap">
+    <div class="hero-copy"><h1>{s.heroTitle.split('\n').map((line: string) => <span>{line}</span>)}</h1><p>{s.heroDescription}</p><a class="button" href={withBase("/forms")}>找到我的服務 <span aria-hidden="true">↗</span></a><div class="hero-note"><span>由學生組成，為校園連線。</span><span>國立中央大學</span></div></div>
+    <Switch />
+  </section>
+  <section class="campus-strip wrap" aria-label="服務範圍"><span>我們守護的每一段連線</span><div><span>通訊工程學系</span><span>電機工程學系</span><span>工程二館・工程五館部分區域</span></div></section>
+  <section class="news-section section-pad wrap">
+    <div class="section-heading" data-reveal><h2>機房近況</h2><a class="text-link" href={withBase("/announcements")}>所有公告與文章 ↗</a></div>
+    <div class="news-list">{posts.map((post, i) => <a href={withBase(`/announcements/${post.slug}`)} class="news-row" data-reveal data-delay={i * 70}><h3>{post.title}</h3><div class="news-meta"><span>{post.category}</span><time datetime={post.date}>{formatDate(post.date)}{post.source ? ' 匯入' : ''}</time></div><p>{post.summary}</p><span class="row-arrow" aria-hidden="true">↗</span></a>)}</div>
+  </section>
+  <section id="services" class="services-section section-pad">
+    <div class="wrap"><div class="section-heading" data-reveal><h2>連線的事，<br />交給我們。</h2><p>讓研究、教學與每一天的學習，<br />都能順利連接。</p></div>
+    <div class="services-layout"><div class="service-intro" data-reveal><div class="service-port" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div><p>從實體網路到雲端服務，<br />我們照顧每一個環節。</p><a class="text-link" href={withBase("/forms")}>申請服務與問題回報 ↗</a></div>
+    <div class="service-list">
+      {[
+        ['網路維運', '維護系館有線與無線網路，管理 IP 配發、異常流量及資安防護。', '/forms#network'],
+        ['DNS 管理', '為電機與通訊系的教職員、實驗室，提供系所網域申請與設定。', '/forms#dns'],
+        ['系所郵件', '管理 Google Workspace，協助帳號設定、信件收發及郵件轉移。', '/forms#mail'],
+        ['網頁代管', '教授與實驗室靜態網站代管、FTPS 檔案更新與 Reverse Proxy 維護。', '/forms#hosting'],
+      ].map(([title, description, href], i) => <a class="service-row" href={withBase(href)} data-reveal data-delay={i * 60}><h3>{title}</h3><p>{description}</p><span aria-hidden="true">↗</span></a>)}
+    </div></div></div>
+  </section>
+  <section class="about-panel wrap section-pad"><div class="about-photo" data-reveal><img src={withBase("/images/joining.jpg")} alt="原站使用的伺服器機櫃示意照片" width="1024" height="683" loading="lazy" /><span>機櫃示意・影像沿用原 SNMG 網站</span></div><div class="about-copy" data-reveal><h2>網路背後，<br />是這群人。</h2><p>{s.aboutText}</p><a class="text-link" href={withBase("/about")}>認識工二機房 ↗</a></div></section>
+  <a class="join-band" href={withBase("/joinus")}><div class="wrap"><div class="join-title" data-reveal>一起接上。<span aria-hidden="true">↗</span></div><p data-reveal>對 Linux、網路或資安有點好奇？從這裡開始。</p><span>網管培訓與招募資訊</span></div></a>
+</Layout>
