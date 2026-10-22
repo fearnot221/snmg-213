@@ -1,0 +1,43 @@
+---
+import { withBase } from '../lib/paths.mjs';
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="領地佔領" description="以中央大學校園骨幹拓樸為棋盤的領地佔領小遊戲。">
+  <meta slot="head" name="robots" content="noindex" />
+  <section class="net-stage" aria-labelledby="game-title">
+    <canvas class="net" aria-hidden="true" role="application" aria-label="領地佔領遊戲：方向鍵選擇可進攻或補強的節點，Enter 執行"></canvas>
+    <div class="wrap net-title">
+      <a class="back-link" href={withBase('/')}>← 首頁</a>
+      <h1 id="game-title">領地佔領</h1>
+      <p>你找到彩蛋了。從工程二館 E1-213 出發，和入侵者搶下校園骨幹。</p>
+    </div>
+    <div class="wrap net-hud">
+      <div class="net-game">
+        <button class="net-play" type="button">開始遊戲</button>
+        <p class="net-stats">節點上方是分數、下方小方塊是防護。核心路由器 3 分最值錢。<a href="#rules">規則</a></p>
+        <p class="net-log"></p>
+        <p class="net-result" role="status"></p>
+      </div>
+      <ul class="net-key" aria-label="圖例"><li><i class="you"></i>你</li><li><i class="rival"></i>入侵者</li><li><i class="threat"></i>受攻擊</li></ul>
+    </div>
+  </section>
+  <div id="rules" class="page-content wrap content-grid">
+    <div class="prose">
+      <h2>目標</h2>
+      <p>60 秒內，手上節點的總分比入侵者高。你的基地是工程二館 E1-213（電機、通訊系的網路），入侵者從上游的 HINET 進來；兩個基地都不會被佔領。</p>
+      <h2>怎麼玩</h2>
+      <ul>
+        <li><strong>進攻：</strong>點擊與你的節點相連、正在閃爍的節點，就會沿連線送出藍色封包。連線越快（100G 最快）封包越快。</li>
+        <li><strong>分數：</strong>核心路由器 CC1、CC2 值 3 分，上游網路與 IPS 值 2 分，各系館網路值 1 分，數字標在節點上方。</li>
+        <li><strong>防護：</strong>節點下方的小方塊是防護，每個封包打掉一格，打光才會易主。中立的核心與上游節點有 2 格，系館 1 格；剛佔下的節點只剩 1 格。</li>
+        <li><strong>補強：</strong>點自己的節點可以加 1 格防護（最多 3 格）。節點出現紅色「!」與閃爍外圈，代表紅色封包正在攻擊它，趕快補強。</li>
+        <li><strong>頻寬：</strong>每次進攻或補強花 1 格頻寬（最多 5 格），手上分數越高回充越快。</li>
+      </ul>
+      <h2>小技巧</h2>
+      <p>E1-213 直接以 100G 連到兩台核心路由器，開局先搶 CC1、CC2，再往外擴張系館網路；入侵者會優先攻擊高分又脆弱的節點。</p>
+      <p>拓樸依電算中心公開的校園骨幹圖面繪製，遊戲與封包流動皆為示意，不代表實際網路狀態。</p>
+    </div>
+    <aside class="contact-box"><h2>圖例</h2><p>藍色方框、連線與封包：你。</p><p>紅色虛線圓圈、連線與封包：入侵者。</p><p>閃爍的白色虛線圈：目前可以進攻或補強的節點。</p><p>紅色「!」與閃爍外圈：正被入侵者攻擊。</p><a class="text-link" href={withBase('/')}>回到首頁</a></aside>
+  </div>
+</Layout>
+<script>import '../scripts/network.ts';</script>
