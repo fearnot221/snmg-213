@@ -14,7 +14,8 @@ function cookie(url, value, age = maxAge) {
   return `${cookieName(url)}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}${url.protocol === 'https:' ? '; Secure' : ''}`;
 }
 async function key(secret) {
-  if (!secret || decode(secret).length !== 32) fail('後台尚未設定加密金鑰。',503);
+  if (!secret) fail('後台尚未設定加密金鑰。',503);
+  if (typeof secret !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(secret)) fail('後台登入金鑰設定無效，請由網站管理員檢查 SESSION_KEY。',503);
   return crypto.subtle.importKey('raw',decode(secret),'AES-GCM',false,['encrypt','decrypt']);
 }
 export async function sealSession(data, secret, origin) {

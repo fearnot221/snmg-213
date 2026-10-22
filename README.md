@@ -55,7 +55,7 @@ npm run worker:dev
 npm run worker:deploy
 ```
 
-`SESSION_KEY` 需要 32 bytes 的隨機 base64url 值，以 `wrangler secret put SESSION_KEY` 設定。首次部署的金鑰已設定，不要重新產生，除非你要撤銷所有既有 session。本機 `.dev.vars` 已列入 gitignore，裡面只放開發用加密金鑰。不要提交金鑰或 token。帳號、repo、前台網址與登入限流綁定均在 `wrangler.jsonc`。後台程式更新目前用 Wrangler 手動部署，前台內容 commit 則走 GitHub Actions。
+`SESSION_KEY` 需要 32 bytes 的隨機 base64url 值，以 `wrangler secret put SESSION_KEY` 設定。首次部署的金鑰已設定，不要重新產生，除非你要撤銷所有既有 session。本機 `.dev.vars` 已列入 gitignore，裡面只放開發用加密金鑰。不要提交金鑰或 token。設定 Cloudflare Secret 時，值必須是 43 字元的 base64url 字串，不能包含 `.dev.vars` 的包覆引號；讀取 `.dev.vars` 時應使用 dotenv 解析（例如 Node.js `util.parseEnv`），不能用逐行擷取代替。帳號、repo、前台網址與登入限流綁定均在 `wrangler.jsonc`。後台程式更新目前用 Wrangler 手動部署，前台內容 commit 則走 GitHub Actions。
 
 測試涵蓋內容驗證、發布排序、完整原站路徑、所有內部連結、XSS 清理、登入加密、到期、跨站請求、限流、路徑限制、SHA 衝突與圖片類型。部署前先 build 再 test。
 
