@@ -4,8 +4,8 @@ import { getPosts, categories, formatDate } from '../../lib/content.mjs';
 import { withBase } from '../../lib/paths.mjs';
 const posts = getPosts();
 ---
-<Layout title="公告與文章">
-  <header class="page-intro wrap"><h1>保持連線，<br />掌握近況。</h1><p>維護通知、使用教學與機房日常，都在這裡。</p></header>
+<Layout title="最新公告">
+  <header class="page-intro wrap"><a class="back-link" href={withBase('/')}>首頁</a><h1>最新公告</h1><p>維護通知、服務異動、使用教學與機房活動。</p></header>
   <section class="page-content wrap" aria-label="文章列表">
     <div class="filters">
       <nav class="filter-tabs" aria-label="文章分類">{['', ...categories].map(category => <a href={withBase(`/announcements/?${new URLSearchParams(category ? { category } : {})}`)} data-category={category} aria-current={category === '' ? 'true' : undefined}>{category || '全部內容'}</a>)}</nav>

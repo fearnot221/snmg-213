@@ -1,79 +1,99 @@
 ---
 import { withBase } from '../lib/paths.mjs';
 import Layout from '../layouts/Layout.astro';
-import { getSettings, getPosts, getMembers, formatDate } from '../lib/content.mjs';
+import { getSettings, getPosts, getSchedule, formatDate } from '../lib/content.mjs';
 const s = getSettings();
-const team = getMembers().filter(person => person.image && /^1\d\d-/.test(person.slug));
-const posts = getPosts().slice(0, 4);
-const ticker = ['SNMG E1-213', '網路維運', 'DNS 管理', '系所郵件', '網頁代管', '網管培訓招募中', s.officeHours];
-// Each service is labelled by the port or standard it actually runs on.
+const posts = getPosts().slice(0, 8);
+const schedule = getSchedule();
+// Today's duty per weekday (1–5): only the slots someone is on.
+const duty = [1, 2, 3, 4, 5].map(day => schedule.rows.filter((row: any[]) => row[day].members.length).map((row: any[]) => ({ time: row[0].text, members: row[day].members })));
+// Icons are 24×24 strokes; each service is labelled by the port or standard it runs on.
 const services = [
-  { id: 'network', port: '802.1X', proto: 'ieee 802.1x', title: '網路維護監察', text: '維持系館網路正常運作，監察進出連線，擋下攻擊與不尋常流量。', href: '/forms/#network' },
-  { id: 'dns', port: '53', proto: 'udp/53', title: 'DNS 管理', text: '教職員與實驗室可申請通訊系或電機系網域下的網址。', href: '/forms/#dns' },
-  { id: 'mail', port: '587', proto: 'tcp/587', title: '系所郵件', text: '管理 Google Workspace，協助帳號設定、收發信與郵件轉移。', href: '/forms/#mail' },
-  { id: 'hosting', port: '443', proto: 'tcp/443', title: '網頁代管', text: '教授與實驗室的靜態網站代管、FTPS 更新與 Reverse Proxy。', href: '/forms/#hosting' },
+  { title: '網路維護與異常回報', proto: '802.1X', text: '維持工程二館網路正常運作，監察異常流量；斷線或速度異常請回報。', href: '/forms/#network', action: '回報網路問題', icon: 'M4 6h16v8H4zM8 18h8M12 14v4M7 10h.01M11 10h.01' },
+  { title: 'DNS 網域申請', proto: 'udp/53', text: '教職員與實驗室可申請通訊系或電機系網域下的主機名稱。', href: '/forms/#dns', action: '申請網域', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18' },
+  { title: '系所電子郵件', proto: 'tcp/587', text: '管理系所 Google Workspace，協助帳號設定、收發信與郵件轉移。', href: '/forms/#mail', action: '郵件問題協助', icon: 'M3 6h18v12H3zM3 7l9 6 9-6' },
+  { title: '網頁代管', proto: 'tcp/443', text: '教授與實驗室靜態網站代管、FTPS 更新與 Reverse Proxy 維護。', href: '/forms/#hosting', action: '洽詢代管', icon: 'M4 4h16v6H4zM4 14h16v6H4zM8 7h.01M8 17h.01' },
+  { title: '文件與教學', proto: 'docs', text: '無線網路連線、郵件軟體設定等操作文件與教學文章。', href: '/documents/', action: '瀏覽文件', icon: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6' },
+  { title: '值班與到訪', proto: 'E1-213', text: `${s.officeHours}，可至工程二館 E1-213 找值班人員協助。`, href: '/sched/', action: '查看值班表', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2' },
+];
+const links = [
+  { label: '中央大學電算中心', href: 'https://www.cc.ncu.edu.tw/' },
+  { label: '中央大學 Portal', href: 'https://portal.ncu.edu.tw/' },
+  { label: '電機工程學系', href: 'https://www2.ee.ncu.edu.tw/' },
+  { label: '通訊工程學系', href: 'https://www.ce.ncu.edu.tw/' },
 ];
 ---
 <Layout>
   <section class="hero">
-    <canvas class="net" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
-      <h1>{s.heroTitle.split('\n').map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</h1>
-      <div class="hero-side">
-        <a class="button" href={withBase('/forms/')}>找到我的服務</a>
-        <div class="hero-legend">
-          <ul aria-label="線寬代表的連線速率"><li><i data-speed="100"></i>100G</li><li><i data-speed="10"></i>10G</li><li><i data-speed="1.2"></i>1.2G</li><li><i data-speed="1"></i>1G</li></ul>
-        </div>
+      <div>
+        <p class="hero-eyebrow">NCU EE/CE · SNMG · E1-213</p>
+        <h1>國立中央大學<br />工程二館網路機房</h1>
+        <p>負責電機系與通訊系的網路維運、DNS 網域、系所郵件與網頁代管，並與電算中心協同維護系館資安。</p>
+        <div class="hero-actions"><a class="button" href={withBase('/forms/')}>服務申請與回報</a><a class="button ghost" href={withBase('/announcements/')}>最新公告</a></div>
       </div>
-    </div>
-    <div class="ticker"><p class="led" data-led={ticker.map(item => `${item}　·　`).join('')} data-led-rows="14" data-led-speed="18">{ticker.join('、')}</p></div>
-  </section>
-
-  <section class="statement section-pad wrap" aria-labelledby="statement-title">
-    <h2 id="statement-title" class="visually-hidden">關於工二機房</h2>
-    <p class="statement-text" data-scrub>{s.aboutText}</p>
-    <dl class="facts">
-      <div><dt>服務對象</dt><dd>通訊系、電機系</dd></div>
-      <div><dt>維護範圍</dt><dd>工程二館、工程五館部分區域</dd></div>
-      <div><dt>辦公時間</dt><dd>{s.officeHours}</dd></div>
-      <div><dt>地點</dt><dd><a href={withBase('/about/')}>工程二館 E1-213</a></dd></div>
-    </dl>
-  </section>
-
-  <section id="services" class="services section-pad" aria-labelledby="services-title">
-    <div class="wrap">
-      <div class="section-heading"><h2 id="services-title">連線的事，<br />交給我們。</h2><a class="text-link" href={withBase('/forms/')}>所有服務與表單</a></div>
-      <ul class="service-list">
-        {services.map(service => (
-          <li><a class="service-row" href={withBase(service.href)}>
-            <span class="service-port led" aria-hidden="true" data-led={service.port} data-led-rows="9" data-led-font="latin">{service.port}</span>
-            <span class="service-name"><small>{service.proto}</small><h3>{service.title}</h3></span>
-            <p>{service.text}</p>
-            <span class="service-arrow" aria-hidden="true">↗</span>
-          </a></li>
-        ))}
-      </ul>
+      <aside class="status-card" aria-label="機房資訊">
+        <h2>STATUS / E1-213</h2>
+        <dl>
+          <div><dt>目前狀態</dt><dd><span data-office>辦公時間</span></dd></div>
+          <div><dt>台北時間</dt><dd data-clock>--:--</dd></div>
+          <div><dt>辦公時間</dt><dd>{s.officeHours}</dd></div>
+          <div><dt>地點</dt><dd>工程二館 E1-213</dd></div>
+          <div><dt>電話</dt><dd>{s.phone}</dd></div>
+        </dl>
+      </aside>
     </div>
   </section>
 
-  <section class="news section-pad wrap" aria-labelledby="news-title">
-    <div class="section-heading"><h2 id="news-title">機房近況</h2><a class="text-link" href={withBase('/announcements/')}>所有公告與文章</a></div>
-    <div class="article-list">{posts.map(post => <a href={withBase(`/announcements/${post.slug}/`)} class="article-item"><div class="news-meta"><time datetime={post.date}>{formatDate(post.date)}</time><span>{post.category}</span></div><div><h3>{post.title}</h3><p>{post.summary}</p></div><span aria-hidden="true">↗</span></a>)}</div>
+  <section id="services" class="section-pad wrap" aria-labelledby="services-title">
+    <div class="section-heading"><h2 id="services-title"><small>01 / SERVICES</small>服務項目</h2><a class="text-link" href={withBase('/forms/')}>所有服務與表單</a></div>
+    <ul class="service-grid">
+      {services.map(service => (
+        <li><a class="service-card" href={withBase(service.href)}>
+          <span class="service-top"><span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d={service.icon} /></svg></span><span class="service-port">{service.proto}</span></span>
+          <h3>{service.title}</h3><p>{service.text}</p><span class="more">{service.action}<i aria-hidden="true">↗</i></span>
+        </a></li>
+      ))}
+    </ul>
   </section>
 
-  <section class="team section-pad" aria-labelledby="team-title">
-    <div class="wrap section-heading"><h2 id="team-title">網路背後，<br />是這群人。</h2><a class="text-link" href={withBase('/members/')}>認識所有成員</a></div>
-    <div class="team-strip">
-      <div class="team-track">{[0, 1].map(copy => <ul aria-hidden={copy ? 'true' : undefined}>{team.map(person => <li><a href={withBase(`/members/${person.slug}/`)} tabindex={copy ? -1 : undefined}><figure><img src={withBase(person.image)} alt="" width="320" height="400" loading="lazy" /></figure><span>{person.name}</span><small>{person.attributes.replace('加入年份：', '').trim()} 年加入</small></a></li>)}</ul>)}</div>
+  <div class="wrap home-columns">
+    <section aria-labelledby="news-title">
+      <div class="section-heading"><h2 id="news-title"><small>02 / NEWS</small>最新消息</h2><a class="text-link" href={withBase('/announcements/')}>更多消息</a></div>
+      <ul class="news-table">{posts.map(post => <li><a href={withBase(`/announcements/${post.slug}/`)}><time datetime={post.date}>{formatDate(post.date)}</time><span class:list={['tag', { pin: post.pinned }]}>{post.pinned ? '置頂' : post.category}</span><h3>{post.title}</h3><span aria-hidden="true">↗</span></a></li>)}</ul>
+    </section>
+    <aside>
+      <section class="side-card" aria-labelledby="duty-title">
+        <h2 id="duty-title">今日值班</h2>
+        {duty.map((slots, i) => <div data-today={i + 1} hidden>{slots.length ? <ul class="duty-list">{slots.map(slot => <li><span>{slot.time}</span><div>{slot.members.map((person: any) => <a href={withBase(person.href)}>{person.name}</a>)}</div></li>)}</ul> : <p>今日未排班，請來信聯絡。</p>}</div>)}
+        <div data-today="0" hidden><p>週末不開放，請於辦公時間來訪或來信。</p></div>
+        <p style="margin-top:10px"><a class="text-link" href={withBase('/sched/')}>完整值班表</a></p>
+      </section>
+      <section class="side-card" aria-labelledby="links-title">
+        <h2 id="links-title">常用連結</h2>
+        <ul class="link-list">{links.map(link => <li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a></li>)}</ul>
+      </section>
+    </aside>
+  </div>
+
+  <section class="about-band section-pad" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div>
+        <div class="section-heading"><h2 id="about-title"><small>03 / ABOUT</small>關於我們</h2></div>
+        <p>{s.aboutText}</p>
+        <dl class="facts">
+          <div><dt>服務對象</dt><dd>電機系、通訊系</dd></div>
+          <div><dt>維護範圍</dt><dd>工程二館、工程五館部分區域</dd></div>
+          <div><dt>聯絡信箱</dt><dd><a href={`mailto:${s.email}`}>{s.email}</a></dd></div>
+          <div><dt>校內分機</dt><dd>{s.phone.replace('校內分機 ', '')}</dd></div>
+        </dl>
+        <div class="hero-actions"><a class="button" href={withBase('/about/')}>關於機房</a><a class="button ghost" href={withBase('/joinus/')}>培訓與招募</a><a class="button ghost" href={withBase('/members/')}>團隊成員</a></div>
+      </div>
+      <figure class="about-net">
+        <div class="net-box"><canvas class="net" data-egg={withBase('/play/')} aria-hidden="true"></canvas></div>
+        <figcaption><span>校園骨幹拓樸示意：E1-213 即工程二館（電機、通訊系），以 100G 連到核心路由器。</span><ul class="hero-legend" aria-label="線寬代表連線速率"><li><i data-speed="100"></i>100G</li><li><i data-speed="10"></i>10G</li><li><i data-speed="1.2"></i>1.2G</li><li><i data-speed="1"></i>1G</li></ul></figcaption>
+      </figure>
     </div>
-  </section>
-
-  <section class="join wrap" aria-labelledby="join-title">
-    <a class="join-link" href={withBase('/joinus/')}>
-      <h2 id="join-title" class="join-title">一起接上。</h2>
-      <p>對 Linux、網路或資安有點好奇？每學年下學期開設免費培訓，開放旁聽，期末招募新成員。</p>
-      <span class="join-cta">培訓與招募 <i aria-hidden="true">↗</i></span>
-    </a>
   </section>
 </Layout>
-<script>import '../scripts/network.ts'; import '../scripts/led.ts';</script>
+<script>import '../scripts/network.ts';</script>
