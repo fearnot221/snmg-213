@@ -35,7 +35,7 @@ test('Markdown preserves formatting while stripping XSS and prefixing repo media
   assert.match(html,/href="\/snmg-213\/forms\/"/);
 });
 test('base paths work for pages, anchors and CMS media without doubling the prefix', () => {
-  for(const [input,expected] of [['/','/snmg-213/'],['/#services','/snmg-213/#services'],['/images/a.jpg','/snmg-213/images/a.jpg'],['/snmg-213/forms/','/snmg-213/forms/'],['https://example.com/','https://example.com/'],['mailto:test@example.com','mailto:test@example.com'],['#main','#main']]) assert.equal(withBase(input),expected);
+  for(const [input,expected] of [['/','/snmg-213/'],['/#services','/snmg-213/#services'],['/images/a.jpg','/snmg-213/images/a.jpg'],['/snmg-213/forms/','/snmg-213/forms/'],['https://example.com/','https://example.com/'],['mailto:test@example.com','mailto:test@example.com'],['#main','#main'],['/forms','/snmg-213/forms/'],['/forms#dns','/snmg-213/forms/#dns'],['/announcements?category=a','/snmg-213/announcements/?category=a'],['/snmg-213','/snmg-213/']]) assert.equal(withBase(input),expected);
 });
 function htmlFiles(folder) {return readdirSync(folder,{withFileTypes:true}).flatMap(item=>item.isDirectory()?htmlFiles(join(folder,item.name)):item.name.endsWith('.html')?[join(folder,item.name)]:[]);}
 test('production output is static, all internal page and asset URLs resolve under the repo base', () => {
