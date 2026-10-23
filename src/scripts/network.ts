@@ -237,7 +237,7 @@ if (canvas) {
       taps = now - lastTap < 1500 ? taps + 1 : 1; lastTap = now;
       const site = named.get('E1-213')!;
       site.pulse = 1;
-      if (taps >= 5) float(site, `${taps} / 13`);
+      if (taps >= 5) float(site, `${taps} / 13`, 'you');
       if (taps >= 13) location.href = canvas!.dataset.egg!;
       else if (still) draw(0);
     });
